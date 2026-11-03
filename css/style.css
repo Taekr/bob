@@ -1,0 +1,438 @@
+/* 색상 토큰 (PRD 8.1) — 색을 바꿀 때는 여기만 고치세요 */
+:root {
+  --color-navy: #0B2A5B;
+  --color-primary: #1D5FD1;
+  --color-primary-soft: #E8F0FD;
+  --color-bg: #F4F7FC;
+  --color-surface: #FFFFFF;
+  --color-text: #1A1F2B;
+  --color-text-sub: #5A6478;
+  --color-border: #DCE3EF;
+  --color-kcal: #0B2A5B;
+  --color-on-primary: #FFFFFF;
+  --shadow-card: 0 1px 2px rgba(11, 42, 91, 0.06);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-navy: #0E2247;
+    --color-primary: #5B8FF0;
+    --color-primary-soft: #1A2B4A;
+    --color-bg: #0F1420;
+    --color-surface: #182030;
+    --color-text: #E8ECF4;
+    --color-text-sub: #9AA4B8;
+    --color-border: #2A3448;
+    --color-kcal: #BFD3FA;
+    --color-on-primary: #0F1420;
+    --shadow-card: none;
+    color-scheme: dark;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* 헤더 */
+.app-header {
+  background: var(--color-navy);
+  color: #FFFFFF;
+  padding: calc(16px + env(safe-area-inset-top)) 16px 16px;
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.week-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.week-range {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #FFFFFF;
+}
+
+.icon-btn svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.icon-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.app-header .icon-btn:focus-visible,
+.this-week-btn:focus-visible {
+  outline-color: #FFFFFF;
+}
+
+.this-week-btn {
+  margin-top: 8px;
+  min-height: 36px;
+  padding: 4px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  background: transparent;
+  color: #FFFFFF;
+  font-size: 15px;
+}
+
+/* 요일 탭 */
+.day-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  padding: 12px 16px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.day-tab {
+  position: relative;
+  min-height: 56px;
+  padding: 6px 0;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+}
+
+.day-tab .tab-day {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.day-tab .tab-date {
+  font-size: 13px;
+  color: var(--color-text-sub);
+  font-variant-numeric: tabular-nums;
+}
+
+.day-tab .tab-today {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--color-navy);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.day-tab[aria-selected="true"] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.day-tab[aria-selected="true"] .tab-date {
+  color: var(--color-on-primary);
+}
+
+/* 본문 */
+.content {
+  scroll-margin-top: 80px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notice {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--color-primary-soft);
+  color: var(--color-text);
+  font-size: 15px;
+}
+
+.unit {
+  margin-left: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-sub);
+}
+
+.meal-card {
+  scroll-margin-top: 92px; /* 고정된 요일 탭에 가리지 않도록 */
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  padding: 14px 16px;
+}
+
+.meal-card.is-current {
+  border: 2px solid var(--color-primary);
+  padding: 13px 15px;
+}
+
+.meal-head {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.meal-card.is-closed .meal-head {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.meal-card.is-closed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.meal-card.is-closed .empty {
+  padding: 0;
+}
+
+.meal-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+
+.meal-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.meal-time {
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--color-text-sub);
+  font-variant-numeric: tabular-nums;
+}
+
+.corner {
+  padding-top: 12px;
+}
+
+.corner + .corner {
+  margin-top: 12px;
+  border-top: 1px dashed var(--color-border);
+}
+
+.corner-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.corner-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.corner-kcal {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-kcal);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.extras {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--color-primary-soft);
+  font-size: 15px;
+}
+
+.extra + .extra {
+  margin-top: 6px;
+}
+
+.extras dt {
+  font-weight: 600;
+}
+
+.extras dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.extra-meta {
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--color-text-sub);
+}
+
+.all-day-items {
+  margin: 10px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.badge {
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.badge-open {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.badge-next {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-list li {
+  padding: 3px 0;
+  overflow-wrap: anywhere;
+}
+
+.menu-list li:first-child {
+  font-weight: 600;
+}
+
+.empty {
+  margin: 0;
+  padding: 10px 0 2px;
+  color: var(--color-text-sub);
+}
+
+.message-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 28px 16px;
+  text-align: center;
+}
+
+.message-card h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.message-card p {
+  margin: 0;
+  color: var(--color-text-sub);
+}
+
+.primary-btn {
+  margin-top: 16px;
+  min-height: 44px;
+  padding: 8px 20px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 600;
+}
+
+.page-footer {
+  padding: 4px 4px 16px;
+  font-size: 14px;
+  color: var(--color-text-sub);
+}
+
+.page-footer p {
+  margin: 0;
+}
+
+.noscript {
+  padding: 16px;
+  text-align: center;
+}
